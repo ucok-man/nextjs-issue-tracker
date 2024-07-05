@@ -23,7 +23,7 @@ export default function RootLayout({ children }: Props) {
       <body className={inter.className}>
         <Theme>
           <Navbar />
-          <main>{children}</main>
+          <main className="px-5">{children}</main>
         </Theme>
       </body>
     </html>
