@@ -1,6 +1,7 @@
 "use client";
 
 import ErrorMsg from "@/components/ErrorMsg";
+import Spinner from "@/components/Spinner";
 import { createIssueSchema } from "@/types/createIssueSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Callout, TextField } from "@radix-ui/themes";
@@ -16,6 +17,7 @@ type IssueForm = z.infer<typeof createIssueSchema>;
 
 export default function NewIssuePage() {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     register,
     control,
@@ -28,9 +30,11 @@ export default function NewIssuePage() {
 
   const submitform = async (data: IssueForm) => {
     try {
+      setIsSubmitting(true);
       await axios.post("/api/issues", data);
       router.push("/issues");
     } catch (error) {
+      setIsSubmitting(false);
       setSubmitError(
         "Unexpected error has occured. Please check your submission!"
       );
@@ -59,13 +63,15 @@ export default function NewIssuePage() {
           render={({ field }) => (
             <SimpleMDE
               placeholder="Description"
-              options={{ status: false }}
+              // options={{ status: false }} // bug?
               {...field}
             />
           )}
         />
         <ErrorMsg>{errors.description?.message}</ErrorMsg>
-        <Button className="cursor-pointer">Submit</Button>
+        <Button className="cursor-pointer" disabled={isSubmitting}>
+          Submit {isSubmitting && <Spinner />}
+        </Button>
       </form>
     </div>
   );
