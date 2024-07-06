@@ -1,8 +1,9 @@
 "use client";
 
+import ErrorMsg from "@/components/ErrorMsg";
 import { createIssueSchema } from "@/types/createIssueSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Callout, Text, TextField } from "@radix-ui/themes";
+import { Button, Callout, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
 import { useRouter } from "next/navigation";
@@ -51,11 +52,7 @@ export default function NewIssuePage() {
           placeholder="Title"
           {...register("title")}
         ></TextField.Root>
-        {errors.title && (
-          <Text color="red" as="p">
-            {errors.title.message}
-          </Text>
-        )}
+        <ErrorMsg>{errors.title?.message}</ErrorMsg>
         <Controller
           name="description"
           control={control}
@@ -67,11 +64,7 @@ export default function NewIssuePage() {
             />
           )}
         />
-        {errors.description && (
-          <Text color="red" as="p">
-            {errors.description.message}
-          </Text>
-        )}
+        <ErrorMsg>{errors.description?.message}</ErrorMsg>
         <Button className="cursor-pointer">Submit</Button>
       </form>
     </div>
