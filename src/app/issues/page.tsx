@@ -1,8 +1,8 @@
 import IssueStatusBadge from "@/components/IssueStatusBadge";
+import Link from "@/components/Link";
 import delay from "@/utils/delay";
 import prisma from "@db/client";
 import { Table } from "@radix-ui/themes";
-import Link from "next/link";
 import IssueHeader from "./IssueHeader";
 
 export default async function IssuesPage() {
