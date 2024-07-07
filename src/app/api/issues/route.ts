@@ -4,14 +4,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const input = await req.json();
-  const { error, data } = issueFormInputValidation.safeParse(input);
+  const { error, data: validInput } = issueFormInputValidation.safeParse(input);
   if (error) {
     return NextResponse.json({ error: error.format() }, { status: 400 });
   }
   const issue = await prisma.issue.create({
     data: {
-      title: data.title,
-      description: data.description,
+      title: validInput.title,
+      description: validInput.description,
     },
   });
 
