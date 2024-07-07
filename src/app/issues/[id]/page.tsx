@@ -1,5 +1,4 @@
-import IssueStatusBadge from "@/components/IssueStatusBadge";
-import delay from "@/utils/delay";
+import { IssueStatusBadge } from "@/components";
 import prisma from "@db/client";
 import { Box, Card, Flex, Heading, Text } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
@@ -10,7 +9,6 @@ type Props = {
 };
 
 export default async function IssueDetailPage({ params }: Props) {
-  await delay(5);
   const validId = parseInt(params.id);
   if (!validId) notFound();
 

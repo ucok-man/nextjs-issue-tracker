@@ -1,9 +1,7 @@
 "use client";
 
-import ErrorMsg from "@/components/ErrorMsg";
-import Spinner from "@/components/Spinner";
+import { ErrorMsg, Spinner } from "@/components";
 import { createIssueSchema } from "@/types/createIssueSchema";
-import delay from "@/utils/delay";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Callout, TextField } from "@radix-ui/themes";
 import axios from "axios";
@@ -41,8 +39,6 @@ export default async function NewIssuePage() {
       );
     }
   };
-
-  await delay(2);
 
   return (
     <Box className="max-w-xl space-y-3">
