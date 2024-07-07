@@ -1,13 +1,11 @@
 import IssueStatusBadge from "@/components/IssueStatusBadge";
 import Link from "@/components/Link";
-import delay from "@/utils/delay";
 import prisma from "@db/client";
 import { Table } from "@radix-ui/themes";
 import IssueHeader from "./IssueHeader";
 
 export default async function IssuesPage() {
   const issues = await prisma.issue.findMany();
-  await delay(2);
   return (
     <div>
       <IssueHeader />

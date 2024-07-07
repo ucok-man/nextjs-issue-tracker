@@ -3,8 +3,9 @@
 import ErrorMsg from "@/components/ErrorMsg";
 import Spinner from "@/components/Spinner";
 import { createIssueSchema } from "@/types/createIssueSchema";
+import delay from "@/utils/delay";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Callout, TextField } from "@radix-ui/themes";
+import { Box, Button, Callout, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
 import { useRouter } from "next/navigation";
@@ -15,7 +16,7 @@ import { z } from "zod";
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
-export default function NewIssuePage() {
+export default async function NewIssuePage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const {
@@ -41,8 +42,10 @@ export default function NewIssuePage() {
     }
   };
 
+  await delay(2);
+
   return (
-    <div className="max-w-xl space-y-3">
+    <Box className="max-w-xl space-y-3">
       {submitError && (
         <Callout.Root color="red">
           <Callout.Text>{submitError}</Callout.Text>
@@ -73,6 +76,6 @@ export default function NewIssuePage() {
           Submit {isSubmitting && <Spinner />}
         </Button>
       </form>
-    </div>
+    </Box>
   );
 }
