@@ -1,13 +1,13 @@
 import { Skeleton } from "@/components";
 import { Table } from "@radix-ui/themes";
-import IssueHeader from "./IssueHeader";
+import IssuesHeader from "./IssuesHeader";
 
 export default function LoadingIssuePage() {
   const items = Array.from({ length: 10 }, (_, i) => i);
 
   return (
     <div>
-      <IssueHeader />
+      <IssuesHeader />
 
       <Table.Root variant="surface">
         <Table.Header>

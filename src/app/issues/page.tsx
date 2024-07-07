@@ -2,13 +2,13 @@ import { Link } from "@/components";
 import IssueStatusBadge from "@/components/IssueStatusBadge";
 import prisma from "@db/client";
 import { Table } from "@radix-ui/themes";
-import IssueHeader from "./IssueHeader";
+import IssuesHeader from "./IssuesHeader";
 
 export default async function IssuesPage() {
   const issues = await prisma.issue.findMany();
   return (
     <div>
-      <IssueHeader />
+      <IssuesHeader />
 
       <Table.Root variant="surface">
         <Table.Header>
