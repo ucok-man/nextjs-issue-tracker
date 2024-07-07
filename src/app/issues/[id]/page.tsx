@@ -1,5 +1,8 @@
+import IssueStatusBadge from "@/components/IssueStatusBadge";
 import prisma from "@db/client";
+import { Card, Flex, Heading, Text } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
+import ReactMarkdown from "react-markdown";
 
 type Props = {
   params: { id: string };
@@ -16,10 +19,14 @@ export default async function IssueDetailPage({ params }: Props) {
 
   return (
     <div>
-      <div>{issue.title}</div>
-      <div>{issue.description}</div>
-      <div>{issue.status}</div>
-      <div>{issue.createdAt.toDateString()}</div>
+      <Heading>{issue.title}</Heading>
+      <Flex align="center" gap="3" my="2">
+        <IssueStatusBadge status={issue.status} />
+        <Text>{issue.createdAt.toDateString()}</Text>
+      </Flex>
+      <Card className="prose prose-sm" mt="5">
+        <ReactMarkdown>{issue.description}</ReactMarkdown>
+      </Card>
     </div>
   );
 }
