@@ -7,7 +7,7 @@ export default async function NewIssuePage() {
       <Heading as="h1" className="mb-4">
         Create New Issue
       </Heading>
-      <IssueForm />
+      <IssueForm action="create" />
     </Box>
   );
 }

@@ -22,7 +22,7 @@ export default async function EditIssuePage({ params }: Props) {
       <Heading as="h1" className="mb-4">
         Edit Issue
       </Heading>
-      <IssueForm issue={issue} />
+      <IssueForm issue={issue} action="update" />
     </Box>
   );
 }

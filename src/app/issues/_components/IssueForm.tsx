@@ -20,9 +20,10 @@ type IssueFormInput = z.infer<typeof issueFormInputValidation>;
 
 type Props = {
   issue?: Issue;
+  action: "create" | "update";
 };
 
-export default function IssueForm({ issue }: Props) {
+export default function IssueForm({ issue, action }: Props) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const {
@@ -38,7 +39,11 @@ export default function IssueForm({ issue }: Props) {
   const submitform = async (data: IssueFormInput) => {
     try {
       setIsSubmitting(true);
-      await axios.post("/api/issues", data);
+
+      if (action == "create") await axios.post("/api/issues", data);
+      if (action == "update")
+        await axios.patch(`/api/issues/${issue?.id}`, data);
+
       router.push("/issues");
     } catch (error) {
       setIsSubmitting(false);
