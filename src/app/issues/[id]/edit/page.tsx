@@ -15,10 +15,9 @@ export default async function EditIssuePage({ params }: Props) {
     where: { id: validId },
   });
   if (!issue) notFound();
-  console.log({ issue });
 
   return (
-    <Box>
+    <Box className="max-w-2xl">
       <Heading as="h1" className="mb-4">
         Edit Issue
       </Heading>
