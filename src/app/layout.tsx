@@ -1,4 +1,4 @@
-import { Navbar } from "@/components";
+import { AuthProvider, Navbar } from "@/components";
 import { Container, Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import type { Metadata } from "next";
@@ -25,13 +25,15 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <body className={inter.variable}>
-        <Theme accentColor="violet" scaling="110%">
-          <Navbar />
-          <main className="px-5">
-            <Container>{children}</Container>
-          </main>
-          {/* <ThemePanel /> */}
-        </Theme>
+        <AuthProvider>
+          <Theme accentColor="violet" scaling="110%">
+            <Navbar />
+            <main className="px-5">
+              <Container>{children}</Container>
+            </main>
+            {/* <ThemePanel /> */}
+          </Theme>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,3 +1,4 @@
+export { default as AuthProvider } from "./AuthProvider";
 export { default as ErrorMsg } from "./ErrorMsg";
 export { default as IssueStatusBadge } from "./IssueStatusBadge";
 export { default as Link } from "./Link";

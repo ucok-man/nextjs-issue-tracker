@@ -1,12 +1,15 @@
 "use client";
 
+import { Box } from "@radix-ui/themes";
 import classNames from "classnames";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BsFillBugFill } from "react-icons/bs";
 
 export default function Navbar() {
   const currentPath = usePathname();
+  const { status, data: session } = useSession();
 
   const links = [
     {
@@ -38,6 +41,14 @@ export default function Navbar() {
           </li>
         ))}
       </ul>
+      <Box>
+        {status === "authenticated" && (
+          <Link href="/api/auth/signout">Sign out</Link>
+        )}
+        {status === "unauthenticated" && (
+          <Link href="/api/auth/signin">Sign in</Link>
+        )}
+      </Box>
     </nav>
   );
 }
