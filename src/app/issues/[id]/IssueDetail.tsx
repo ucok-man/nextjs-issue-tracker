@@ -10,9 +10,7 @@ type Props = {
 export default function IssueDetail({ issue }: Props) {
   return (
     <>
-      <Heading as="h1" size="7">
-        {issue.title}
-      </Heading>
+      <Heading as="h1">{issue.title}</Heading>
       <Flex align="center" gap="3" my="2">
         <IssueStatusBadge status={issue.status} />
         <Text>{issue.createdAt.toDateString()}</Text>

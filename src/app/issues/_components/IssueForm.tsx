@@ -75,6 +75,7 @@ export default function IssueForm({ issue, action }: Props) {
           control={control}
           render={({ field: { onChange, value } }) => (
             <SimpleMDE
+              className="text-base"
               placeholder="Description"
               // {...field}
               onChange={onChange}
