@@ -7,6 +7,11 @@
   --default-font-family: var(--font-inter);
 }
 
+/* ovveride fontsize in easyMDE */
+.cm-s-easymde .cm-header-1 {
+  font-size: calc(1.5rem) !important;
+}
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

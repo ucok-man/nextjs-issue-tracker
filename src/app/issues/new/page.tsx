@@ -12,7 +12,7 @@ export default async function NewIssuePage() {
   await delay(2);
   return (
     <Box className="max-w-2xl">
-      <Heading as="h1" className="mb-4">
+      <Heading as="h1" className="mb-4" color="violet">
         Create New Issue
       </Heading>
       <IssueForm action="create" />

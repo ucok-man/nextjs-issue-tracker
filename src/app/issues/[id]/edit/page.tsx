@@ -18,8 +18,8 @@ export default async function EditIssuePage({ params }: Props) {
 
   return (
     <Box className="max-w-2xl">
-      <Heading as="h1" className="mb-4">
-        Edit Issue
+      <Heading as="h1" className="mb-4" color="violet">
+        Edit This Issue
       </Heading>
       <IssueForm issue={issue} action="update" />
     </Box>
