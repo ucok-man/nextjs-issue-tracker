@@ -52,12 +52,6 @@ export async function DELETE(req: NextRequest, { params }: Props) {
       { status: 400 }
     );
 
-  const input = await req.json();
-  const { error, data: validInput } = issueFormInputValidation.safeParse(input);
-  if (error) {
-    return NextResponse.json({ error: error.format() }, { status: 400 });
-  }
-
   const oldIssue = await prisma.issue.findUnique({
     where: { id: validId },
   });
