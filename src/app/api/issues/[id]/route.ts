@@ -1,15 +1,17 @@
 import { auth } from "@/auth";
-import { issueFormInputValidation } from "@/types/issueFormInputValidation";
+import { updateIssueDTO } from "@/types/issueDTO";
 import prisma from "@db/client";
 import { NextResponse } from "next/server";
 
 export const PATCH = auth(async function PATCH(req, ctx) {
+  // is login?
   if (!req.auth)
     return NextResponse.json(
       { error: { message: "Not authenticated" } },
       { status: 401 }
     );
 
+  // validate id this must be number
   const validId = parseInt(ctx.params?.id as string);
   if (!validId)
     return NextResponse.json(
@@ -17,12 +19,14 @@ export const PATCH = auth(async function PATCH(req, ctx) {
       { status: 400 }
     );
 
+  // validate body
   const input = await req.json();
-  const { error, data: validInput } = issueFormInputValidation.safeParse(input);
+  const { error, data: validInput } = updateIssueDTO.safeParse(input);
   if (error) {
     return NextResponse.json({ error: error.format() }, { status: 400 });
   }
 
+  // find old issue
   const oldIssue = await prisma.issue.findUnique({
     where: { id: validId },
   });
@@ -33,11 +37,16 @@ export const PATCH = auth(async function PATCH(req, ctx) {
     );
   }
 
+  console.log(validInput);
+
+  // update the issue
   const updatedIssue = await prisma.issue.update({
     where: { id: validId },
     data: {
-      title: validInput.title,
-      description: validInput.description,
+      title: validInput.title || oldIssue.title,
+      description: validInput.description || oldIssue.description,
+      assignedToUserId:
+        validInput.assignedToUserId || oldIssue.assignedToUserId,
     },
   });
 

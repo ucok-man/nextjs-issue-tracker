@@ -1,7 +1,7 @@
 "use client";
 
 import { ErrorMsg, Spinner } from "@/components";
-import { issueFormInputValidation } from "@/types/issueFormInputValidation";
+import { createIssueDTO } from "@/types/issueDTO";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Issue } from "@prisma/client";
 import { Box, Button, Callout, TextField } from "@radix-ui/themes";
@@ -13,7 +13,7 @@ import { Controller, useForm } from "react-hook-form";
 import SimpleMDE from "react-simplemde-editor";
 import { z } from "zod";
 
-type IssueFormInput = z.infer<typeof issueFormInputValidation>;
+type IssueFormInput = z.infer<typeof createIssueDTO>;
 
 type Props = {
   issue?: Issue;
@@ -29,7 +29,7 @@ export default function IssueForm({ issue, action }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<IssueFormInput>({
-    resolver: zodResolver(issueFormInputValidation),
+    resolver: zodResolver(createIssueDTO),
   });
   const [submitError, setSubmitError] = useState<string | null>(null);
 
