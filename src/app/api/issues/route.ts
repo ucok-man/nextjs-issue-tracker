@@ -1,8 +1,15 @@
+import { auth } from "@/auth";
 import { issueFormInputValidation } from "@/types/issueFormInputValidation";
 import prisma from "@db/client";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export const POST = auth(async function POST(req) {
+  if (!req.auth)
+    return NextResponse.json(
+      { error: { message: "Not authenticated" } },
+      { status: 401 }
+    );
+
   const input = await req.json();
   const { error, data: validInput } = issueFormInputValidation.safeParse(input);
   if (error) {
@@ -19,4 +26,4 @@ export async function POST(req: NextRequest) {
   return NextResponse.json(response, {
     status: 201,
   });
-}
+});

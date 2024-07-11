@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import prisma from "@db/client";
 import { Box, Flex, Grid } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
@@ -10,6 +11,8 @@ type Props = {
 };
 
 export default async function IssueDetailPage({ params }: Props) {
+  const session = await auth();
+
   const validId = parseInt(params.id);
   if (!validId) notFound();
 
@@ -23,10 +26,12 @@ export default async function IssueDetailPage({ params }: Props) {
       <Box className="lg:col-span-4">
         <IssueDetail issue={issue} />
       </Box>
-      <Flex direction="column" gap="2">
-        <EditIssueBtn issueId={issue.id} />
-        <DeleteIssueBtn issueId={issue.id} />
-      </Flex>
+      {session?.user && (
+        <Flex direction="column" gap="2">
+          <EditIssueBtn issueId={issue.id} />
+          <DeleteIssueBtn issueId={issue.id} />
+        </Flex>
+      )}
     </Grid>
   );
 }

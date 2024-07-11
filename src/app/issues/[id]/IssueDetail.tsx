@@ -15,7 +15,7 @@ export default function IssueDetail({ issue }: Props) {
         <IssueStatusBadge status={issue.status} />
         <Text>{issue.createdAt.toDateString()}</Text>
       </Flex>
-      <Card className="prose prose-sm max-w-full" mt="5">
+      <Card className="prose prose-headings:text-2xl max-w-full" mt="5">
         <ReactMarkdown>{issue.description}</ReactMarkdown>
       </Card>
     </>

@@ -1,16 +1,19 @@
+import { auth } from "@/auth";
 import { issueFormInputValidation } from "@/types/issueFormInputValidation";
 import prisma from "@db/client";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-type Props = {
-  params: { id: string };
-};
+export const PATCH = auth(async function PATCH(req, ctx) {
+  if (!req.auth)
+    return NextResponse.json(
+      { error: { message: "Not authenticated" } },
+      { status: 401 }
+    );
 
-export async function PATCH(req: NextRequest, { params }: Props) {
-  const validId = parseInt(params.id);
+  const validId = parseInt(ctx.params?.id as string);
   if (!validId)
     return NextResponse.json(
-      { error: "The id must be number and greater than 0" },
+      { error: { message: "The id must be number and greater than 0" } },
       { status: 400 }
     );
 
@@ -25,7 +28,7 @@ export async function PATCH(req: NextRequest, { params }: Props) {
   });
   if (oldIssue === null) {
     return NextResponse.json(
-      { error: "The requested resources cannot be found" },
+      { error: { message: "The requested resources cannot be found" } },
       { status: 404 }
     );
   }
@@ -42,13 +45,19 @@ export async function PATCH(req: NextRequest, { params }: Props) {
   return NextResponse.json(response, {
     status: 200,
   });
-}
+});
 
-export async function DELETE(req: NextRequest, { params }: Props) {
-  const validId = parseInt(params.id);
+export const DELETE = auth(async function DELETE(req, ctx) {
+  if (!req.auth)
+    return NextResponse.json(
+      { error: { message: "Not authenticated" } },
+      { status: 401 }
+    );
+
+  const validId = parseInt(ctx.params?.id as string);
   if (!validId)
     return NextResponse.json(
-      { error: "The id must be number and greater than 0" },
+      { error: { message: "The id must be number and greater than 0" } },
       { status: 400 }
     );
 
@@ -57,7 +66,7 @@ export async function DELETE(req: NextRequest, { params }: Props) {
   });
   if (oldIssue === null) {
     return NextResponse.json(
-      { error: "The requested resources cannot be found" },
+      { error: { message: "The requested resources cannot be found" } },
       { status: 404 }
     );
   }
@@ -70,4 +79,4 @@ export async function DELETE(req: NextRequest, { params }: Props) {
   return NextResponse.json(response, {
     status: 200,
   });
-}
+});
