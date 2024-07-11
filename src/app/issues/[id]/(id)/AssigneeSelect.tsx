@@ -14,21 +14,8 @@ type Props = {
 };
 
 type UpdateIssueDTO = z.infer<typeof updateIssueDTO>;
-
 export default function AssigneeSelect({ issue }: Props) {
-  const {
-    data: users,
-    error,
-    isLoading,
-  } = useQuery<User[]>({
-    queryKey: ["users"],
-    queryFn: async () => {
-      const { data: body } = await axios.get<{ data: User[] }>("/api/users");
-      return body.data;
-    },
-    staleTime: 60 * 1000, // 60 seconds
-    retry: 3,
-  });
+  const { users, error, isLoading } = useUser();
 
   const onChange = async (userid: string) => {
     try {
@@ -68,4 +55,21 @@ export default function AssigneeSelect({ issue }: Props) {
       <Toaster />
     </>
   );
+}
+
+function useUser() {
+  const {
+    data: users,
+    error,
+    isLoading,
+  } = useQuery<User[]>({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const { data: body } = await axios.get<{ data: User[] }>("/api/users");
+      return body.data;
+    },
+    staleTime: 60 * 1000, // 60 seconds
+    retry: 3,
+  });
+  return { users, error, isLoading };
 }
