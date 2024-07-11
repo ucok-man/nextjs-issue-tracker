@@ -6,3 +6,4 @@ export { default as Navbar } from "./Navbar";
 export { default as QueryProvider } from "./QueryProvider";
 export { default as Skeleton } from "./Skeleton";
 export { default as Spinner } from "./Spinner";
+export { Toaster, toast } from "./Toast";
