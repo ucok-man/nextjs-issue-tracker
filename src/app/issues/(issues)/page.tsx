@@ -1,179 +1,56 @@
-import { Link } from "@/components";
-import IssueStatusBadge from "@/components/IssueStatusBadge";
 import Pagination from "@/components/Pagination";
 import prisma from "@db/client";
-import { Issue, Status } from "@prisma/client";
-import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
-import { Table } from "@radix-ui/themes";
-import NextLink from "next/link";
-import { notFound } from "next/navigation";
+import { Flex } from "@radix-ui/themes";
+import IssueTabel from "./IssueTabel";
 import IssuesHeader from "./IssuesHeader";
-
-type OrderBy =
-  | Extract<keyof Issue, "createdAt" | "title" | "status">
-  | `-${Extract<keyof Issue, "createdAt" | "title" | "status">}`;
+import { SearchParams, validateSearchParams } from "./util";
 
 type Props = {
-  searchParams: {
-    status: Status | undefined;
-    orderBy: OrderBy | undefined;
-    page: string;
-  };
+  searchParams: SearchParams;
 };
 
 export default async function IssuesPage({ searchParams }: Props) {
+  const {
+    status,
+    orderBy,
+    orderSort,
+    page: currentPage,
+  } = validateSearchParams(searchParams);
   const pageSize = 10;
-  const currentPage = parseInt(searchParams.page) || 1;
-  if (!currentPage) return notFound();
 
-  const { validstatus, validOrderBy } = validateSearchParams(searchParams);
-
+  const sanitizeOrderBy = orderBy.startsWith("-") ? orderBy.slice(1) : orderBy;
   const issues = await prisma.issue.findMany({
     where: {
-      status: validstatus,
+      status: status !== "ALL" ? status : undefined,
     },
     orderBy: {
-      [validOrderBy || "createdAt"]: getSortDirection(searchParams.orderBy),
+      [sanitizeOrderBy]: orderSort,
     },
     skip: (currentPage - 1) * pageSize,
     take: pageSize,
   });
   const totalRecords = await prisma.issue.count({
     where: {
-      status: validstatus,
+      status: status !== "ALL" ? status : undefined,
     },
   });
 
-  const columns: {
-    label: string;
-    value: OrderBy;
-    classes?: string;
-  }[] = [
-    { label: "Issue", value: getOrderByValue(searchParams.orderBy)["title"] },
-    {
-      label: "Status",
-      value: getOrderByValue(searchParams.orderBy)["status"],
-      classes: "hidden md:table-cell",
-    },
-    {
-      label: "Created",
-      value: getOrderByValue(searchParams.orderBy)["createdAt"],
-      classes: "hidden md:table-cell",
-    },
-  ];
-
   return (
-    <div>
+    <Flex direction={"column"} gap={"4"}>
       <IssuesHeader />
-
-      <Table.Root variant="surface">
-        <Table.Header>
-          <Table.Row>
-            {columns.map(({ label, classes, value }) => (
-              <Table.ColumnHeaderCell key={label} className={classes}>
-                <NextLink
-                  href={{
-                    query: {
-                      ...searchParams,
-                      orderBy: value,
-                    },
-                  }}
-                >
-                  {label}
-                </NextLink>
-                {value.includes(validOrderBy!) &&
-                  (getSortDirection(searchParams.orderBy) === "asc" ? (
-                    <ArrowUpIcon className="inline" />
-                  ) : (
-                    <ArrowDownIcon className="inline" />
-                  ))}
-              </Table.ColumnHeaderCell>
-            ))}
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {issues.map((issue) => (
-            <Table.Row key={issue.id}>
-              <Table.Cell>
-                <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
-                <div className="block md:hidden">
-                  <IssueStatusBadge status={issue.status} />
-                </div>
-              </Table.Cell>
-              <Table.Cell className="hidden md:table-cell">
-                <IssueStatusBadge status={issue.status} />
-              </Table.Cell>
-              <Table.Cell className="hidden md:table-cell">
-                {issue.createdAt.toDateString()}
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table.Root>
-
+      <IssueTabel
+        issues={issues}
+        searchParams={{
+          orderBy: orderBy,
+          status: status,
+          orderSort: orderSort,
+        }}
+      />
       <Pagination
         pageSize={pageSize}
         currentPage={currentPage}
         itemCount={totalRecords}
       />
-    </div>
+    </Flex>
   );
-}
-
-function validateSearchParams(params: Props["searchParams"]) {
-  let result: {
-    validstatus: Status | undefined;
-    validOrderBy: string | undefined;
-  } = {
-    validstatus: undefined,
-    validOrderBy: undefined,
-  };
-
-  if (params.status !== undefined) {
-    const safeStatuses = Object.values(Status);
-    result.validstatus = safeStatuses.includes(params.status)
-      ? params.status
-      : undefined;
-  }
-
-  if (params.orderBy !== undefined) {
-    const safeOrderBy: OrderBy[] = [
-      "createdAt",
-      "status",
-      "title",
-      "-title",
-      "-createdAt",
-      "-status",
-    ];
-    const validOrderBy = safeOrderBy.includes(params.orderBy as OrderBy)
-      ? params.orderBy
-      : undefined;
-
-    if (validOrderBy && validOrderBy.includes("-")) {
-      result.validOrderBy = params.orderBy.substring(1, params.orderBy.length);
-    } else {
-      result.validOrderBy = validOrderBy;
-    }
-  }
-  return result;
-}
-
-function getSortDirection(orderby: OrderBy | undefined) {
-  if (orderby !== undefined && !orderby.includes("-")) {
-    return "asc";
-  }
-  return "desc";
-}
-
-function getOrderByValue(
-  param: Props["searchParams"]["orderBy"]
-): Record<Exclude<OrderBy, "-title" | "-createdAt" | "-status">, OrderBy> {
-  return {
-    title: param === "-title" || param === undefined ? "title" : `-title`,
-    createdAt:
-      param === "-createdAt" || param === undefined
-        ? "createdAt"
-        : `-createdAt`,
-    status: param === "-status" || param === undefined ? "status" : `-status`,
-  };
 }
