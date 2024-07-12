@@ -1,16 +1,16 @@
 "use client";
 
-import { ErrorMsg, Spinner } from "@/components";
+import { ErrorMsg, SimpleMDE, Spinner } from "@/components";
 import { createIssueDTO } from "@/types/issueDTO";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Issue } from "@prisma/client";
 import { Box, Button, Callout, TextField } from "@radix-ui/themes";
 import axios from "axios";
-import "easymde/dist/easymde.min.css";
+// import "easymde/dist/easymde.min.css";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import SimpleMDE from "react-simplemde-editor";
+// import SimpleMDE from "react-simplemde-editor";
 import { z } from "zod";
 
 type IssueFormInput = z.infer<typeof createIssueDTO>;

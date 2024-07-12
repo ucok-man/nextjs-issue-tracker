@@ -19,7 +19,7 @@ export default function AssigneeSelect({ issue }: Props) {
 
   const onChange = async (userid: string) => {
     try {
-      await axios.patch("/xapi/issues/" + issue.id, {
+      await axios.patch("/api/issues/" + issue.id, {
         assignedToUserId: userid === "none" ? null : userid,
       } as UpdateIssueDTO);
     } catch (error) {
