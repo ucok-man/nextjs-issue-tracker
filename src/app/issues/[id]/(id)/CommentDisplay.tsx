@@ -1,9 +1,11 @@
 import { Avatar, Box, Card, Flex, Separator, Text } from "@radix-ui/themes";
 import ReactMarkdown from "react-markdown";
 
-type Props = {};
+type Props = {
+  issueId: number;
+};
 
-export default function CommentDisplay({}: Props) {
+export default function CommentDisplay({ issueId }: Props) {
   return (
     <Box>
       <CommentDisplayCard />

@@ -42,7 +42,7 @@ export default async function IssueDetailPage({ params }: Props) {
       <Grid columns={{ initial: "1", md: "5" }} gap="5" className="mb-5">
         <Box className="lg:col-span-4">
           <SectionSparator>Comments Section</SectionSparator>
-          <CommentDisplay />
+          <CommentDisplay issueId={validId} />
           <Separator className="w-full mb-5 h-1 bg-gray-200" />
           <CommentWrite issueId={validId} />
         </Box>
