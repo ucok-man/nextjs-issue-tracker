@@ -1,21 +1,25 @@
 "use client";
 
-import { SimpleMDE, SimpleMDEOptions } from "@/components";
+import { ErrorMsg, SimpleMDE, SimpleMDEOptions } from "@/components";
 import { createCommentDTO } from "@/types/commentDTO";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Avatar, Button, Card, Flex, Text } from "@radix-ui/themes";
+import { Avatar, Button, Card, Flex, Spinner, Text } from "@radix-ui/themes";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 
 type CommentFormInput = z.infer<typeof createCommentDTO>;
 
-type Props = {};
+type Props = {
+  issueId: number;
+};
 
-export default function CommentWrite({}: Props) {
+export default function CommentWrite({ issueId }: Props) {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     control,
     handleSubmit,
@@ -34,9 +38,16 @@ export default function CommentWrite({}: Props) {
 
   const submitForm = async (data: CommentFormInput) => {
     try {
-      await axios.post("/api/comments", data);
+      setIsSubmitting(true);
+      await axios.post("/api/comments", {
+        description: data.description,
+        issueId: issueId,
+      });
+      setIsSubmitting(false);
       router.refresh();
     } catch (error) {
+      setIsSubmitting(false);
+      toast.error("Something went wrong. Please try again later!");
       console.log(error);
     }
   };
@@ -70,8 +81,15 @@ export default function CommentWrite({}: Props) {
             />
           )}
         />
+        <ErrorMsg>{errors.description?.message}</ErrorMsg>
         <Flex direction={"row-reverse"}>
-          <Button className="cursor-pointer mt-2 text-sm">Comment</Button>
+          <Button
+            className="cursor-pointer mt-2 text-sm"
+            disabled={isSubmitting}
+          >
+            Comment
+            {isSubmitting && <Spinner />}
+          </Button>
         </Flex>
       </form>
     </Card>

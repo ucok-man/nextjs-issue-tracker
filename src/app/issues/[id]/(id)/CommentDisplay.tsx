@@ -11,7 +11,9 @@ export default function CommentDisplay({}: Props) {
   );
 }
 
-function CommentDisplayCard() {
+type CommentDisplayCardProps = {};
+
+function CommentDisplayCard({}: CommentDisplayCardProps) {
   return (
     <>
       <Card>
@@ -31,7 +33,6 @@ function CommentDisplayCard() {
             </Text>
           </Box>
         </Flex>
-        {/* <Separator size={"4"} /> */}
         <Card className="prose prose-headings:text-2xl max-w-full" mt="1">
           <ReactMarkdown>
             It seems like it's because of the corrupted font file. I didn't see

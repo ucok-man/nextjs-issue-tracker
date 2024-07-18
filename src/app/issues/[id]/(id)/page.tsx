@@ -44,7 +44,7 @@ export default async function IssueDetailPage({ params }: Props) {
           <SectionSparator>Comments Section</SectionSparator>
           <CommentDisplay />
           <Separator className="w-full mb-5 h-1 bg-gray-200" />
-          <CommentWrite />
+          <CommentWrite issueId={validId} />
         </Box>
       </Grid>
     </>

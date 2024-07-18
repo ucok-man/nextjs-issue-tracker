@@ -15,10 +15,12 @@ export const POST = auth(async function POST(req) {
   if (error) {
     return NextResponse.json({ error: error.format() }, { status: 400 });
   }
+
   const issue = await prisma.comment.create({
     data: {
       description: validInput.description,
       authorId: req.auth.user.id!,
+      issueId: input.issueId,
     },
   });
 
