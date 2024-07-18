@@ -13,6 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Comment {
+  id          Int    @id @default(autoincrement())
+  description String @db.Text
+
+  authorId String @db.VarChar(255)
+  author   User   @relation(fields: [authorId], references: [id])
+}
+
 enum Status {
   OPEN
   IN_PROGGRES
@@ -46,6 +54,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   assignedIssues Issue[]
+  Comment        Comment[]
 }
 
 model Account {
