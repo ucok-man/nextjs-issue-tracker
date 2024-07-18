@@ -21,7 +21,6 @@ export const POST = auth(async function POST(req) {
       description: validInput.description,
       authorId: req.auth.user.id!,
       issueId: input.issueId,
-      image: req.auth.user.image,
     },
   });
 

@@ -1,3 +1,5 @@
+import prisma from "@db/client";
+import { Comment, User } from "@prisma/client";
 import { Avatar, Box, Card, Flex, Separator, Text } from "@radix-ui/themes";
 import ReactMarkdown from "react-markdown";
 
@@ -5,42 +7,51 @@ type Props = {
   issueId: number;
 };
 
-export default function CommentDisplay({ issueId }: Props) {
+export default async function CommentDisplay({ issueId }: Props) {
+  const comments = await prisma.comment.findMany({
+    where: {
+      issueId: issueId,
+    },
+    include: {
+      author: true,
+    },
+  });
+
   return (
     <Box>
-      <CommentDisplayCard />
+      {comments.map((comment) => (
+        <CommentDisplayCard
+          key={comment.id}
+          comment={comment}
+          author={comment.author}
+        />
+      ))}
     </Box>
   );
 }
 
-type CommentDisplayCardProps = {};
+type CommentDisplayCardProps = {
+  comment: Comment;
+  author: User;
+};
 
-function CommentDisplayCard({}: CommentDisplayCardProps) {
+function CommentDisplayCard({ comment, author }: CommentDisplayCardProps) {
   return (
     <>
       <Card>
         <Flex gap="3" align="center" mb={"2"}>
-          <Avatar
-            size="3"
-            src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?&w=64&h=64&dpr=2&q=70&crop=focalpoint&fp-x=0.67&fp-y=0.5&fp-z=1.4&fit=crop"
-            radius="full"
-            fallback="?"
-          />
+          <Avatar size="3" src={author.image!} radius="full" fallback="?" />
           <Box>
             <Text as="div" size="2" weight="bold">
-              Teodros Girmay
+              {author.name}
             </Text>
             <Text as="div" size="1" color="gray">
-              commented on May 4, 2023
+              commented on {comment.createdAt.toDateString()}
             </Text>
           </Box>
         </Flex>
         <Card className="prose prose-headings:text-2xl max-w-full" mt="1">
-          <ReactMarkdown>
-            It seems like it's because of the corrupted font file. I didn't see
-            this output in the terminal [cause]: Error: Unsupported OpenType
-            signature wOF2
-          </ReactMarkdown>
+          <ReactMarkdown>{comment.description}</ReactMarkdown>
         </Card>
       </Card>
       <Box px={"6"}>
