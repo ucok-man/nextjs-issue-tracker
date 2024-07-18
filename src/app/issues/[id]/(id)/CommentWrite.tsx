@@ -50,7 +50,6 @@ export default function CommentWrite({ issueId }: Props) {
     } catch (error) {
       setIsSubmitting(false);
       toast.error("Something went wrong. Please try again later!");
-      console.log(error);
     }
   };
 
@@ -79,7 +78,7 @@ export default function CommentWrite({ issueId }: Props) {
               placeholder="Write your comment here..."
               options={simpleMdeOption}
               onChange={field.onChange}
-              value={field.value}
+              value={isSubmitting ? undefined : field.value}
             />
           )}
         />
