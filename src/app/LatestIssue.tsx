@@ -10,7 +10,7 @@ export default async function LatestIssue({}: Props) {
     orderBy: {
       createdAt: "desc",
     },
-    take: 5,
+    take: 7,
     include: {
       assignedToUser: true,
     },
