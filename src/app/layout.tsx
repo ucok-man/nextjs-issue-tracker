@@ -13,7 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Next Issue Tracker",
+  title: "Issue Tracker",
   description: "Tutorial Purpose only :)",
 };
 

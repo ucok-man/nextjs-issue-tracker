@@ -1,6 +1,7 @@
 import delay from "@/utils/delay";
 import { Box, Heading } from "@radix-ui/themes";
 // import IssueForm from "../_components/IssueForm";
+import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import IssueFormLoading from "../_components/IssueFormLoading";
 const IssueForm = dynamic(() => import("../_components/IssueForm"), {
@@ -19,3 +20,8 @@ export default async function NewIssuePage() {
     </Box>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Issue Tracker | Create New",
+  description: "Create new issue",
+};

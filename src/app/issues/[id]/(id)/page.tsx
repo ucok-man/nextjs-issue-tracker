@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import SectionSparator from "@/components/SectionSparator";
 import prisma from "@db/client";
 import { Box, Flex, Grid, Separator } from "@radix-ui/themes";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import AssigneeSelect from "./AssigneeSelect";
 import CommentDisplay from "./CommentDisplay";
@@ -49,4 +50,19 @@ export default async function IssueDetailPage({ params }: Props) {
       </Grid>
     </>
   );
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const validId = parseInt(params.id);
+  if (!validId) notFound();
+
+  const issue = await prisma.issue.findUnique({
+    where: { id: validId },
+  });
+  if (!issue) notFound();
+
+  return {
+    title: `Issue Trakcer | ${issue.title}`,
+    description: `Details of issue ${issue.title}`,
+  };
 }

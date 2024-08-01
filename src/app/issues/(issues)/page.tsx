@@ -1,9 +1,15 @@
 import Pagination from "@/components/Pagination";
 import prisma from "@db/client";
 import { Flex } from "@radix-ui/themes";
+import { Metadata } from "next";
 import IssueTabel from "./IssueTabel";
 import IssuesHeader from "./IssuesHeader";
 import { SearchParams, validateSearchParams } from "./util";
+
+export const metadata: Metadata = {
+  title: "Issue Tracker | Issue List",
+  description: "View all of project issues",
+};
 
 type Props = {
   searchParams: SearchParams;
