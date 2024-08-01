@@ -2,16 +2,16 @@ import { Status } from "@prisma/client";
 import { Card, Flex, Text } from "@radix-ui/themes";
 import Link from "next/link";
 
-type Props = {
-  open: number;
-  inProgress: number;
-  closed: number;
-};
-
 type IssueSummaryStatus = {
   label: string;
   value: number;
   status: Status;
+};
+
+type Props = {
+  open: number;
+  inProgress: number;
+  closed: number;
 };
 
 export default function IssueSummary({ open, inProgress, closed }: Props) {
