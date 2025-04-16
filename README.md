@@ -2,6 +2,8 @@
 
 A web application for tracking and managing project issues, allowing teams to create, assign, track and discuss tasks or bugs efficiently in one centralized location.
 
+Deployemnt link A [https://nextjs-issue-tracker-bd84.vercel.app](https://nextjs-issue-tracker-bd84.vercel.app).
+
 ## Feature
 
 - Authentication
