@@ -11,8 +11,6 @@ import DeleteIssueBtn from "./delete-issue-btn";
 import EditIssueBtn from "./edit-issue-btn";
 import IssueDetail from "./issue-detail";
 
-export const dynamic = "force-dynamic";
-
 type Props = {
   params: { id: string };
 };

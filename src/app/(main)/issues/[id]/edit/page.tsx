@@ -8,8 +8,6 @@ type Props = {
   params: { id: string };
 };
 
-export const dynamic = "force-dynamic";
-
 export default async function EditIssuePage({ params }: Props) {
   const validId = parseInt(params.id);
   if (!validId) notFound();
