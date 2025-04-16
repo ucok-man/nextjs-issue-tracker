@@ -31,15 +31,20 @@ enum Status {
 }
 
 model Issue {
-  id               Int       @id @default(autoincrement())
-  title            String    @db.VarChar(255)
-  description      String    @db.Text
-  status           Status    @default(OPEN)
-  createdAt        DateTime  @default(now())
-  updateddAt       DateTime  @updatedAt
-  assignedToUserId String?   @db.VarChar(255)
-  assignedToUser   User?     @relation(fields: [assignedToUserId], references: [id])
-  Comment          Comment[]
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  description String   @db.Text
+  status      Status   @default(OPEN)
+  createdAt   DateTime @default(now())
+  updateddAt  DateTime @updatedAt
+
+  assignedToId String? @db.VarChar(255)
+  assignedTo   User?   @relation("assignedIssue", fields: [assignedToId], references: [id])
+
+  createdById String
+  createdBy   User   @relation("createdIssue", fields: [createdById], references: [id])
+
+  Comment Comment[]
 }
 
 model User {
@@ -57,7 +62,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  assignedIssues Issue[]
+  assignedIssues Issue[]   @relation("assignedIssue")
+  createdIssues  Issue[]   @relation("createdIssue")
   Comment        Comment[]
 }
 

@@ -1,6 +1,6 @@
-import { AuthProvider, Navbar, QueryProvider } from "@/components";
-import { Container, Theme } from "@radix-ui/themes";
-import "@radix-ui/themes/styles.css";
+import Navbar from "@/components/navbar";
+import Providers from "@/context/providers";
+import { Container } from "@radix-ui/themes";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import React from "react";
@@ -25,17 +25,12 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <body className={inter.variable}>
-        <QueryProvider>
-          <AuthProvider>
-            <Theme accentColor="violet" scaling="110%">
-              <Navbar />
-              <main className="px-5">
-                <Container>{children}</Container>
-              </main>
-              {/* <ThemePanel /> */}
-            </Theme>
-          </AuthProvider>
-        </QueryProvider>
+        <Providers>
+          <Navbar />
+          <main className="px-5">
+            <Container>{children}</Container>
+          </main>
+        </Providers>
       </body>
     </html>
   );

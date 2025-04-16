@@ -4,7 +4,7 @@ import prisma from "@db/client";
 import { NextResponse } from "next/server";
 
 export const POST = auth(async function POST(req) {
-  if (!req.auth)
+  if (!req.auth || !req.auth.user?.id)
     return NextResponse.json(
       { error: { message: "Not authenticated" } },
       { status: 401 }
@@ -19,6 +19,7 @@ export const POST = auth(async function POST(req) {
     data: {
       title: validInput.title,
       description: validInput.description,
+      createdById: req.auth.user.id,
     },
   });
 

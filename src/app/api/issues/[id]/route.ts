@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { updateIssueDTO } from "@/types/issueDTO";
 import prisma from "@db/client";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 export const PATCH = auth(async function PATCH(req, ctx) {
@@ -37,18 +38,19 @@ export const PATCH = auth(async function PATCH(req, ctx) {
     );
   }
 
-  console.log(validInput);
-
   // update the issue
   const updatedIssue = await prisma.issue.update({
     where: { id: validId },
     data: {
       title: validInput.title || oldIssue.title,
       description: validInput.description || oldIssue.description,
-      assignedToUserId:
-        validInput.assignedToUserId || oldIssue.assignedToUserId,
+      assignedToId: validInput.assignedToId,
+      status: validInput.status || oldIssue.status,
     },
   });
+
+  revalidatePath("/issues");
+  revalidatePath("/");
 
   const response = { data: updatedIssue };
   return NextResponse.json(response, {
