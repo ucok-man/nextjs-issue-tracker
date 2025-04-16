@@ -19,7 +19,7 @@ const STATUS_OPTION = ["OPEN", "IN_PROGGRES", "CLOSED"] as const;
 
 export default function StatusSelect({ issue, currentId }: Props) {
   const router = useRouter();
-  const shouldShow =
+  const canEdit =
     currentId === issue.createdById || currentId === issue.assignedToId;
 
   const onChange = async (status: string) => {
@@ -33,7 +33,7 @@ export default function StatusSelect({ issue, currentId }: Props) {
     }
   };
 
-  if (!shouldShow) return <div></div>;
+  if (!canEdit) return <IssueStatusBadge status={issue.status} />;
 
   return (
     <>

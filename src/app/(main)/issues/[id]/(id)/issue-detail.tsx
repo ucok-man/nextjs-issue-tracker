@@ -21,8 +21,6 @@ export default function IssueDetail({ issue }: Props) {
           <StatusSelect currentId={session.user.id} issue={issue} />
         )}
         <Text className="text-sm">{issue.createdAt.toDateString()}</Text>
-        {/* <IssueStatusBadge status={issue.status} /> */}
-        {/* <div className="flex justify-between items-center w-full"></div> */}
       </Flex>
       <Card className="prose prose-headings:text-2xl max-w-full" mt="5">
         <ReactMarkdown>{issue.description}</ReactMarkdown>
