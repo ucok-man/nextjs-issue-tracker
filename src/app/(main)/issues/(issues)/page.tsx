@@ -2,6 +2,7 @@ import Pagination from "@/components/pagination";
 import prisma from "@db/client";
 import { Flex } from "@radix-ui/themes";
 import { Metadata } from "next";
+import { Suspense } from "react";
 import IssuesHeader from "./issue-header";
 import IssueTabel from "./issue-table";
 import { SearchParams, validateSearchParams } from "./util";
@@ -52,11 +53,13 @@ export default async function IssuesPage({ searchParams }: Props) {
           orderSort: orderSort,
         }}
       />
-      <Pagination
-        pageSize={pageSize}
-        currentPage={currentPage}
-        itemCount={totalRecords}
-      />
+      <Suspense>
+        <Pagination
+          pageSize={pageSize}
+          currentPage={currentPage}
+          itemCount={totalRecords}
+        />
+      </Suspense>
     </Flex>
   );
 }
